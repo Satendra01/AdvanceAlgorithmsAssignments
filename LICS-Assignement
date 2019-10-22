@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class LongestCommonIncreasingSubsequence{
+	
+
+public static void main (String []args)
+{
+    long A[]={7,8,9,10,1,2,3,4};
+    long B[]= {-1,4,23,0,1};
+//    Scanner S=new Scanner(Sys em.in);
+//    System.out.println("Enter size of first list");
+//    int Asize=S.nextInt();
+//    System.out.println("Enter size of second list");
+//    int Bsize=S.nextInt();
+//    long A[]=new long[Asize];
+//    long B[]=new long[Bsize];
+//    System.out.println("Enter elements of first list");
+//    for(int i=0;i<Asize;i++)
+//    {
+//    	A[i]=S.nextLong();
+//    }
+//    System.out.println("Enter elements of second list");
+//    for(int i=0;i<Bsize;i++)
+//    {
+//    	B[i]=S.nextLong();
+//    }
+//    int Asize=sizeof(A)/sizeof(A[0]);
+//    int Bsize=sizeof(B)/sizeof(B[0]);
+    
+    
+    List<Long> list =new ArrayList<Long>();
+     list=LongestCommonIncreasingSubsequence.findCS(A,B,list);
+     LongestCommonIncreasingSubsequence.findLICS(list);
+     
+    
+   
+    
+}
+public static List<Long> findCS(long A[],long B[],List<Long>list)
+{
+    int flag=0;
+    for(int i=0;i<B.length;i++)
+    {
+       for(int j=0;j<A.length;j++)
+        {
+            if(B[i]==A[j])
+            {
+                 list.add(B[i]);break;
+            }
+        }
+    }
+    return list;
+}    
+public static void findLICS(List<Long> list)
+{
+	if(list.isEmpty())
+	{System.out.println("There is no common subsequence between the two lists");return;}
+	long[] arr=new long[list.size()];
+	for(int i=0;i<arr.length;i++)
+		arr[i]=1;
+	for(int i=1;i<list.size();i++)
+	{
+		for(int j=0;j<i;j++)
+		{
+			if(list.get(i)>list.get(j) && ((arr[j]+1)>arr[i]))
+			{
+				arr[i]=arr[j]+1;
+			}
+		}
+	}
+	long max=arr[0];
+	int maxindex=0;
+	for(int i=0;i<arr.length;i++)
+	{
+		if(arr[i]>max)
+			{max=arr[i];maxindex=i;}
+	}
+	
+	long newarr[]=new long[(int)max];
+	
+	long min=list.get(maxindex);
+	int minindex=maxindex;
+	int k=newarr.length-1;
+	
+	newarr[k]=min;
+	
+	
+	for(int i=maxindex-1;i>=0;i--)
+	{
+		if(min>list.get(i) && arr[i]+1==arr[minindex] && --k>=0)
+		{
+			min=list.get(i);
+			minindex=i;
+			newarr[k]=min;
+		}
+	}
+	System.out.println("The length of longest increasing common subsequence is :"+ max);
+	for(int i=0;i<newarr.length;i++)
+		System.out.print(newarr[i]+" ");
+	
+	
+}
+}
